@@ -7,8 +7,66 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="musicBean"
-          class="com.starovoytov.springCore.ClassicalMusic">
-    </bean>
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 4       >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        <bean id="musicBean"
+              class="com.starovoytov.springCore.ClassicalMusic">
+        </bean>
+    -->
 
-</beans>
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 5 Dependency Injection с помощью конструктора и xml     >>>>>>>>>>>>>>>>>>
+
+        <bean id="musicBean"
+              class="com.starovoytov.springCore.ClassicalMusic">
+        </bean>
+
+        <bean id="musicPlayer"
+              class="com.starovoytov.springCore.MusicPlayer">
+            <constructor-arg ref="musicBean"/>
+        </bean>
+    -->
+
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 6       >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    Dependency Injection с помощью setter, внедрение простых значений в качестве зависимомти, внедрение значений из внешнего файла-->
+    <!-- name="music" - это setter setMusic без set, ref="musicBean" - это ссылка на bean id="musicBean" -->
+    <!-- name="name" - это setter setName без set, value="Ipod" - это присваение полю String name значения "Ipod"
+    Пример:
+            <property name="name" value="Ipod"/>
+            <property name="volume" value="60"/>
+    -->
+    <!-- создаём файл свойств musicPlayer.properties-->
+    <!-- <context:property-placeholder - это Tag, которому передаём - location="classpath: musicPlayer.properties", />
+    где musicPlayer.properties - это наш файл настроек musicPlayer. Это для того чтобы
+    <property name="name" value="${musicPlayer.name}"/>, где value="${musicPlayer.name}" - при помощи спец символов ${} передаем поле из файла musicPlayer.properties
+    Пример:
+            <property name="name" value="${musicPlayer.name}"/>
+            <property name="volume" value="${musicPlayer.volume}"/>
+    -->
+    <!-- <property name="musicList"> - это коллекция List<Music> musicList = new ArrayList<>() из musicPlayer
+    <list>
+        <ref bean="rockMusicBean" /> - добавление в коллекцию конкретного жанра с сылкой на bean id="rockMusicBean"-->
+        <context:property-placeholder location="classpath:musicPlayer.properties"/>
+
+        <bean id="rockMusicBean"
+              class="com.starovoytov.springCore.RockMusic">
+        </bean>
+        <bean id="classicalMusicBean"
+              class="com.starovoytov.springCore.ClassicalMusic">
+        </bean>
+        <bean id="chansonMusicBean"
+              class="com.starovoytov.springCore.ChansonMusic">
+        </bean>
+
+        <bean id="musicPlayer"
+              class="com.starovoytov.springCore.MusicPlayer">
+            <property name="music" ref="rockMusicBean"/>
+            <property name="name" value="${musicPlayer.name}"/>
+            <property name="volume" value="${musicPlayer.volume}"/>
+            <property name="musicList">
+                <list>
+                    <ref bean="rockMusicBean" />
+                    <ref bean="classicalMusicBean" />
+                    <ref bean="chansonMusicBean" />
+                </list>
+            </property>
+        </bean>
+    </beans>
