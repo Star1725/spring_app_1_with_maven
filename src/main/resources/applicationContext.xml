@@ -7,15 +7,14 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 4       >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        <bean id="musicBean"
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 4       >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-->
+    <!--    <bean id="musicBean"
               class="com.starovoytov.springCore.ClassicalMusic">
         </bean>
     -->
 
-    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 5 Dependency Injection с помощью конструктора и xml     >>>>>>>>>>>>>>>>>>
-
-        <bean id="musicBean"
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 5 Dependency Injection с помощью конструктора и xml     >>>>>>>>>>>>>>>>-->
+    <!--    <bean id="musicBean"
               class="com.starovoytov.springCore.ClassicalMusic">
         </bean>
 
@@ -25,27 +24,29 @@
         </bean>
     -->
 
-    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 6       >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    Dependency Injection с помощью setter, внедрение простых значений в качестве зависимомти, внедрение значений из внешнего файла-->
-    <!-- name="music" - это setter setMusic без set, ref="musicBean" - это ссылка на bean id="musicBean" -->
-    <!-- name="name" - это setter setName без set, value="Ipod" - это присваение полю String name значения "Ipod"
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 6. Dependency Injection с помощью setter, внедрение простых значений в качестве зависимомти, внедрение значений из внешнего файла
+    Коментарии:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    name="music" - это setter setMusic без set, ref="musicBean" - это ссылка на bean id="musicBean"
+    name="name" - это setter setName без set, value="Ipod" - это присваение полю String name значения "Ipod"
     Пример:
             <property name="name" value="Ipod"/>
             <property name="volume" value="60"/>
-    -->
-    <!-- создаём файл свойств musicPlayer.properties-->
-    <!-- <context:property-placeholder - это Tag, которому передаём - location="classpath: musicPlayer.properties", />
+
+    создаём файл свойств musicPlayer.properties
+    <context:property-placeholder - это Tag, которому передаём - location="classpath: musicPlayer.properties",
     где musicPlayer.properties - это наш файл настроек musicPlayer. Это для того чтобы
     <property name="name" value="${musicPlayer.name}"/>, где value="${musicPlayer.name}" - при помощи спец символов ${} передаем поле из файла musicPlayer.properties
     Пример:
             <property name="name" value="${musicPlayer.name}"/>
             <property name="volume" value="${musicPlayer.volume}"/>
-    -->
-    <!-- <property name="musicList"> - это коллекция List<Music> musicList = new ArrayList<>() из musicPlayer
-    <list>
-        <ref bean="rockMusicBean" /> - добавление в коллекцию конкретного жанра с сылкой на bean id="rockMusicBean"-->
-        <context:property-placeholder location="classpath:musicPlayer.properties"/>
 
+    <property name="musicList"> - это коллекция List<Music> musicList = new ArrayList<>() из musicPlayer
+    Пример:
+    <list>
+        <ref bean="rockMusicBean" /> - добавление в коллекцию конкретного жанра с сылкой на bean id="rockMusicBean"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+    <!--    <context:property-placeholder location="classpath:musicPlayer.properties"/>
         <bean id="rockMusicBean"
               class="com.starovoytov.springCore.RockMusic">
         </bean>
@@ -69,4 +70,79 @@
                 </list>
             </property>
         </bean>
+    -->
+
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 7. Scope       >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    Коментарии:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Scope по умолчанию - singelton, т.е. из контекста (методом getBean) будет доставаться один и тотже объект.
+    Если scope - prototype, то из контекста будут доставаться разные объекты.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+    <!--<context:property-placeholder location="classpath:musicPlayer.properties"/>
+        <bean id="rockMusicBean"
+              class="com.starovoytov.springCore.RockMusic">
+        </bean>
+        <bean id="classicalMusicBean"
+              class="com.starovoytov.springCore.ClassicalMusic">
+        </bean>
+        <bean id="chansonMusicBean"
+              class="com.starovoytov.springCore.ChansonMusic">
+        </bean>
+
+        <bean id="musicPlayer"
+              class="com.starovoytov.springCore.MusicPlayer"
+                scope="prototype">
+            <property name="music" ref="rockMusicBean"/>
+            <property name="name" value="${musicPlayer.name}"/>
+            <property name="volume" value="${musicPlayer.volume}"/>
+            <property name="musicList">
+                <list>
+                    <ref bean="rockMusicBean" />
+                    <ref bean="classicalMusicBean" />
+                    <ref bean="chansonMusicBean" />
+                </list>
+            </property>
+        </bean>
+    -->
+
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 8. Methods      >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    Коментарии:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Добавим к bean id="rockMusicBean" методы init-method и destroy-method с сылкой на методы класса RockMusic.
+    Добавим factory-method, который укажет Spring, что для создания объекта нужно использовать factory-method.
+    Так как scope - singelton, то Spring создаст через factory-method только оди объект
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--    <context:property-placeholder location="classpath:musicPlayer.properties"/>
+        <bean id="rockMusicBean"
+              class="com.starovoytov.springCore.RockMusic"
+                init-method="doInitRockMusic"
+                destroy-method="doDestroyRockMusic"
+                factory-method="getRockMusic">
+        </bean>
+        <bean id="classicalMusicBean"
+              class="com.starovoytov.springCore.ClassicalMusic">
+        </bean>
+        <bean id="chansonMusicBean"
+              class="com.starovoytov.springCore.ChansonMusic">
+        </bean>
+-->
+<!--        <bean id="musicPlayer"-->
+<!--              class="com.starovoytov.springCore.MusicPlayer"-->
+<!--                scope="prototype">-->
+<!--            <property name="music" ref="rockMusicBean"/>-->
+<!--            <property name="name" value="${musicPlayer.name}"/>-->
+<!--            <property name="volume" value="${musicPlayer.volume}"/>-->
+<!--            <property name="musicList">-->
+<!--                <list>-->
+<!--                    <ref bean="rockMusicBean" />-->
+<!--                    <ref bean="classicalMusicBean" />-->
+<!--                    <ref bean="chansonMusicBean" />-->
+<!--                </list>-->
+<!--            </property>-->
+<!--        </bean>-->
+
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<       лекция 9. Annotation      >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    Коментарии:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    <context:component-scan - включает сканирование папки base-package="com.starovoytov.springCore" на наличие фннотации @Component
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <context:component-scan base-package="com.starovoytov.springCore"/>
     </beans>
